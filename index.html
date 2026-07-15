@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+
+  You cannot coordinate what you do not know.
+  You cannot know what you do not own.
+
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noetic Holding Corporation · A cybernetic holding company</title>
+<meta name="description" content="We buy great businesses and station machine intelligence inside them — turning what they know into how they run.">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><mask id="m"><rect width="200" height="200" fill="white"/><circle cx="100" cy="120" r="17" fill="black"/></mask></defs><rect width="200" height="200" fill="black"/><polygon points="0,0 0,200 100,0" fill="white"/><polygon points="100,0 200,0 200,200" fill="white"/><circle cx="100" cy="120" r="45" fill="white" mask="url(%23m)"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400&family=Fragment+Mono&display=swap" rel="stylesheet">
+<script>document.documentElement.className+=' js';try{var t=localStorage.getItem('nhc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<style>
+  :root{
+    --ink:#e5e5e5;
+    --strong:#ffffff;
+    --grey:#979595;
+    --paper:#000000;
+    --rule:rgba(229,229,229,.9);
+    --contact-rule:rgba(255,255,255,.35);
+    --scrim:rgba(0,0,0,.45);
+    --accent:#f04a00;
+    --sans:'Almarai',-apple-system,'Segoe UI',sans-serif;
+    --mono:'Fragment Mono','SFMono-Regular',Consolas,monospace;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --ink:#1a1a1a;
+      --strong:#1a1a1a;
+      --grey:#6b6969;
+      --paper:#ffffff;
+      --rule:rgba(26,26,26,.9);
+      --contact-rule:rgba(26,26,26,.5);
+      --scrim:rgba(255,255,255,.55);
+      --accent:#221fc3;
+    }
+  }
+  /* manual override via the logo — beats the system preference */
+  :root[data-theme="light"]{
+    --ink:#1a1a1a;
+    --strong:#1a1a1a;
+    --grey:#6b6969;
+    --paper:#ffffff;
+    --rule:rgba(26,26,26,.9);
+    --contact-rule:rgba(26,26,26,.5);
+    --scrim:rgba(255,255,255,.55);
+    --accent:#221fc3;
+  }
+  :root[data-theme="dark"]{
+    --ink:#e5e5e5;
+    --strong:#ffffff;
+    --grey:#979595;
+    --paper:#000000;
+    --rule:rgba(229,229,229,.9);
+    --contact-rule:rgba(255,255,255,.35);
+    --scrim:rgba(0,0,0,.45);
+    --accent:#f04a00;
+  }
+  a:focus-visible,button:focus-visible{outline:2px solid var(--strong);outline-offset:3px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    min-height:100dvh;
+    display:flex;flex-direction:column;
+    transition:background-color .45s ease,color .45s ease;
+  }
+  ::selection{background:var(--accent);color:#fff}
+
+  .shell{width:100%;max-width:1120px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+  /* ---------- top bar ---------- */
+  header{border-bottom:1px solid var(--rule)}
+  .bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:14px;padding-bottom:14px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+  .brand-mark{display:flex;align-items:center;width:34px;height:34px;color:var(--strong)}
+  .brand-mark svg{display:block}
+  .brand-stack{display:flex;flex-direction:column}
+  .brand-stack b{
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11.5px;font-weight:700;
+    letter-spacing:-.01em;line-height:1.08;
+    display:block;color:var(--strong);
+  }
+  .bar-right{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--grey);text-decoration:none;
+  }
+  .bar-right:hover{color:var(--strong)}
+
+  /* ---------- copy ---------- */
+  main{
+    flex:1;
+    display:flex;flex-direction:column;justify-content:center;
+    padding-top:clamp(26px,5vh,72px);
+    padding-bottom:clamp(26px,5vh,72px);
+  }
+  h1{
+    font-weight:300;
+    font-size:clamp(1.85rem,3.4vw,2.85rem);
+    line-height:1.25;
+    letter-spacing:-.01em;
+    max-width:26ch;
+    margin-bottom:clamp(20px,4vh,48px);
+  }
+  .copy p{
+    font-weight:400;
+    font-size:clamp(1.02rem,1.35vw,1.18rem);
+    line-height:1.75;
+    max-width:58ch;
+  }
+  .copy p + p{margin-top:1.15em}
+  .turn-line{font-weight:400}
+
+  /* ---------- footer + aurora ---------- */
+  footer{
+    border-top:1px solid var(--rule);
+    position:relative;
+    overflow:hidden;
+    height:clamp(210px,30vh,380px);
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .foot-content{position:relative;z-index:2;text-shadow:0 1px 10px var(--scrim)}
+  .foot{
+    display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+    gap:16px;
+    padding-top:26px;
+  }
+  .foot-brand{font-size:1rem;font-weight:400}
+  .foot-contact{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--strong);text-decoration:none;
+    border-bottom:1px solid var(--contact-rule);padding-bottom:2px;
+  }
+  .foot-base{
+    display:flex;justify-content:space-between;gap:16px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--strong);
+    padding-bottom:20px;
+    text-shadow:0 0 4px var(--scrim),0 0 10px var(--scrim),0 0 20px var(--scrim);
+  }
+
+  .aurora{
+    position:absolute;
+    inset:-110px -110px -22px;
+    z-index:1;
+    filter:blur(46px);
+    transform:translateZ(0);
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 1.6s ease;
+  }
+  .aurora.on{opacity:1}
+  .aurora .ridge{
+    position:absolute;
+    bottom:-2%;
+    left:calc(50% - 130vw);
+    width:260vw;
+    background-size:100% 100%;
+    background-repeat:no-repeat;
+    will-change:transform;
+  }
+
+  /* ---------- motion ---------- */
+  /* hidden state only applies once JS has stamped html.js — no-JS users see everything */
+  .js .rise{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+  .js .rise.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .rise{opacity:1;transform:none;transition:none}
+    .aurora{transition:none}
+  }
+  @media (max-width:680px){
+    .aurora{filter:blur(28px)}
+    .foot,.foot-base{flex-direction:column;gap:10px}
+    footer{height:auto;min-height:230px}
+    .foot-base{padding-top:26px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="shell bar">
+    <a class="brand" href="/" aria-label="Noetic Holding Corporation, back to top">
+      <span class="brand-mark"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" aria-hidden="true"><defs><mask id="ring-mask-hdr"><rect width="200" height="200" fill="white"></rect><circle cx="100" cy="120" r="17" fill="black"></circle></mask></defs><polygon points="0,0 0,200 100,0" fill="currentColor"></polygon><polygon points="100,0 200,0 200,200" fill="currentColor"></polygon><circle cx="100" cy="120" r="45" fill="currentColor" mask="url(#ring-mask-hdr)"></circle></svg></span>
+      <span class="brand-stack"><b>&#1048;OETIC</b><b>HOLDING</b><b>CORPORATION</b></span>
+    </a>
+    <a class="bar-right" href="mailto:team@noetic.world">team@noetic.world</a>
+  </div>
+</header>
+
+<main>
+  <div class="shell">
+    <h1>
+      <span class="rise" style="display:block">Intelligence is becoming an abundant commodity.</span>
+      <span class="rise" style="display:block;transition-delay:.12s">The knowledge that makes it useful is not.</span>
+    </h1>
+    <div class="copy">
+      <p class="rise" style="transition-delay:.28s">The most valuable information in the economy isn&rsquo;t on the internet. It&rsquo;s locked inside businesses&thinsp;&mdash;&thinsp;it&rsquo;s tacit, which AI can&rsquo;t exploit, and it&rsquo;s alpha, which is never for sale.</p>
+      <p class="rise turn-line" style="transition-delay:.40s">But the companies that hold it are sold every day.</p>
+      <p class="rise" style="transition-delay:.52s">We are a cybernetic holding company. We buy these businesses and station a new man on the spot: machine intelligence that learns each firm from the inside. We turn what they know into how they run&thinsp;&mdash;&thinsp;great businesses, made AI&#8209;native, built to compound for another century.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="aurora" id="aurora" aria-hidden="true"></div>
+  <div class="foot-content shell foot">
+    <span class="brand-stack"><b>&#1048;OETIC</b><b>HOLDING</b><b>CORPORATION</b></span>
+    <a class="foot-contact" href="mailto:team@noetic.world">team@noetic.world</a>
+  </div>
+  <div class="foot-content shell foot-base">
+    <span>&copy; 2026 Noetic Inc.</span>
+  </div>
+</footer>
+
+<script>
+  /* reveal */
+  (function(){
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = Array.prototype.slice.call(document.querySelectorAll('.rise'));
+    function reveal(e){ e.classList.add('in'); }
+    if (reduced) { els.forEach(reveal); return; }
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ els.forEach(reveal); }); });
+    setTimeout(function(){ els.forEach(reveal); }, 900);
+  })();
+
+  /* aurora: blurred compounding ridgelines, cursor-sheared */
+  (function(){
+    var aurora = document.getElementById('aurora');
+    if (!aurora) return;
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function ridgePath(seed, jag, rise){
+      var s = seed % 2147483647; if (s <= 0) s += 2147483646;
+      function rand(){ s = s * 16807 % 2147483647; return (s - 1) / 2147483646; }
+      var W = 2600, H = 900, STEPS = 26;
+      var d = 'M 0 ' + H + ' L 0 ' + Math.round(H * 0.80);
+      for (var i = 1; i <= STEPS; i++){
+        var x = Math.round(W / STEPS * i);
+        var base = H * 0.80 - H * rise * Math.pow(i / STEPS, 1.8);
+        var y = base + (rand() - 0.5) * H * jag;
+        y = Math.max(H * 0.05, Math.min(H * 0.95, y));
+        d += ' L ' + x + ' ' + Math.round(y);
+      }
+      d += ' L ' + W + ' ' + H + ' Z';
+      return 'data:image/svg+xml,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H +
+        '" preserveAspectRatio="none"><path d="' + d + '" fill="FILL"/></svg>');
+    }
+
+    /* back -> front */
+    var LAYERS = [
+      {h:1.00, amp:390, ease:0.055, jag:0.30, rise:0.42, seed:67, idle:50, spd:0.16, ph:0.0},
+      {h:0.88, amp:300, ease:0.070, jag:0.36, rise:0.46, seed:51, idle:40, spd:0.22, ph:1.7},
+      {h:0.78, amp:220, ease:0.085, jag:0.30, rise:0.50, seed:37, idle:32, spd:0.26, ph:3.1},
+      {h:0.70, amp:150, ease:0.100, jag:0.34, rise:0.55, seed:23, idle:24, spd:0.32, ph:4.4},
+      {h:0.58, amp:95,  ease:0.120, jag:0.26, rise:0.52, seed:11, idle:16, spd:0.38, ph:5.6}
+    ];
+    /* dark: artifact-orange ramp on black; light: noetic blues on paper */
+    var PALETTES = {
+      dark:  ['#f2e3c9','#f6bd7a','#ef8f3c','#f04a00','#ffffff'],
+      light: ['#dce8f4','#b7d2ec','#87bbc7','#221fc3','#1a1a1a']
+    };
+    var mqLight = matchMedia('(prefers-color-scheme: light)');
+    var footH = () => Math.max(aurora.parentElement.clientHeight, 230);
+    LAYERS.forEach(function(o){
+      var el = document.createElement('div');
+      el.className = 'ridge';
+      el.style.height = Math.round(o.h * footH() * 1.22) + 'px';
+      aurora.appendChild(el);
+      o.el = el; o.x = 0;
+      o.pathUri = ridgePath(o.seed, o.jag, o.rise);
+    });
+    function effectiveLight(){
+      var forced = document.documentElement.getAttribute('data-theme');
+      if (forced === 'light') return true;
+      if (forced === 'dark') return false;
+      return mqLight.matches;
+    }
+    function applyPalette(){
+      var light = effectiveLight();
+      var pal = PALETTES[light ? 'light' : 'dark'];
+      LAYERS.forEach(function(o, i){
+        o.el.style.backgroundImage = 'url("' + o.pathUri.replace('FILL', encodeURIComponent(pal[i])) + '")';
+      });
+      document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
+        m.setAttribute('content', light ? '#ffffff' : '#000000');
+      });
+    }
+    applyPalette();
+    if (mqLight.addEventListener) mqLight.addEventListener('change', function(){
+      if (!document.documentElement.getAttribute('data-theme')) applyPalette();
+    });
+
+    /* the eye toggles the world */
+    var brand = document.querySelector('.brand');
+    if (brand) {
+      brand.setAttribute('title', 'Toggle light / dark');
+      brand.addEventListener('click', function(e){
+        e.preventDefault();
+        var next = effectiveLight() ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('nhc-theme', next); } catch(err) {}
+        applyPalette();
+      });
+    }
+    addEventListener('resize', function(){
+      LAYERS.forEach(function(o){ o.el.style.height = Math.round(o.h * footH() * 1.22) + 'px'; });
+    }, {passive:true});
+
+    function on(){ aurora.classList.add('on'); }
+    requestAnimationFrame(on);
+    setTimeout(on, 600);
+
+    if (reduced) return;
+
+    var mx = 0;
+    addEventListener('pointermove', function(e){
+      mx = e.clientX / innerWidth - 0.5;
+    }, {passive: true});
+
+    var t0 = null;
+    function tick(now){
+      if (t0 === null) t0 = now;
+      var t = (now - t0) / 1000;
+      LAYERS.forEach(function(o){
+        var idle = Math.sin(t * o.spd + o.ph) * o.idle;
+        var target = mx * o.amp + idle;
+        o.x += (target - o.x) * o.ease;
+        o.el.style.transform = 'translate3d(' + o.x.toFixed(2) + 'px,0,0)';
+      });
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  })();
+</script>
+
+</body>
+</html>
