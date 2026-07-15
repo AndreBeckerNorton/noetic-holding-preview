@@ -28,6 +28,7 @@
     --contact-rule:rgba(255,255,255,.35);
     --scrim:rgba(0,0,0,.45);
     --accent:#f04a00;
+    --rail-cap:.35;
     --sans:'Almarai',-apple-system,'Segoe UI',sans-serif;
     --mono:'Fragment Mono','SFMono-Regular',Consolas,monospace;
   }
@@ -41,6 +42,7 @@
       --contact-rule:rgba(26,26,26,.5);
       --scrim:rgba(255,255,255,.55);
       --accent:#221fc3;
+      --rail-cap:.6;
     }
   }
   /* manual override via the logo — beats the system preference */
@@ -53,6 +55,7 @@
     --contact-rule:rgba(26,26,26,.5);
     --scrim:rgba(255,255,255,.55);
     --accent:#221fc3;
+    --rail-cap:.6;
   }
   :root[data-theme="dark"]{
     --ink:#e5e5e5;
@@ -63,18 +66,23 @@
     --contact-rule:rgba(255,255,255,.35);
     --scrim:rgba(0,0,0,.45);
     --accent:#f04a00;
+    --rail-cap:.35;
   }
   a:focus-visible,button:focus-visible{outline:2px solid var(--strong);outline-offset:3px}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{
+  html{
     background:var(--paper);
+    transition:background-color .45s ease;
+  }
+  body{
+    background:transparent;
     color:var(--ink);
     font-family:var(--sans);
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
     min-height:100dvh;
     display:flex;flex-direction:column;
-    transition:background-color .45s ease,color .45s ease;
+    transition:color .45s ease;
   }
   ::selection{background:var(--accent);color:#fff}
 
@@ -175,6 +183,27 @@
     will-change:transform;
   }
 
+  /* ---------- aurora rail: the same light, leaking up the right edge ---------- */
+  .aurora-rail{
+    position:fixed;top:0;right:0;bottom:0;
+    width:clamp(180px,calc((100vw - 1120px)/2 + 130px),380px);
+    z-index:-1;
+    filter:blur(46px);transform:translateZ(0);
+    pointer-events:none;opacity:0;transition:opacity 1.8s ease;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.18) 25%,rgba(0,0,0,.45) 55%,rgba(0,0,0,.75) 82%,#000 100%);
+            mask-image:linear-gradient(to bottom,transparent 0,rgba(0,0,0,.18) 25%,rgba(0,0,0,.45) 55%,rgba(0,0,0,.75) 82%,#000 100%);
+  }
+  /* peak intensity capped per theme — the gradient never pushes into a hard cutoff */
+  .aurora-rail.on{opacity:var(--rail-cap)}
+  .aurora-rail .vridge{
+    position:absolute;top:-80vh;height:260vh;right:-15%;width:130%;
+    background-size:100% 100%;background-repeat:no-repeat;
+    will-change:transform;
+  }
+  @media (max-width:760px){
+    .aurora-rail{display:none}
+  }
+
   /* ---------- motion ---------- */
   /* hidden state only applies once JS has stamped html.js — no-JS users see everything */
   .js .rise{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
@@ -192,6 +221,8 @@
 </style>
 </head>
 <body>
+
+<div class="aurora-rail" id="aurora-rail" aria-hidden="true"></div>
 
 <header>
   <div class="shell bar">
@@ -263,6 +294,26 @@
         '" preserveAspectRatio="none"><path d="' + d + '" fill="FILL"/></svg>');
     }
 
+    /* vertical ridge, anchored to the right edge: thin at the top, heavy at the bottom */
+    function vRidgePath(seed, jag, taper){
+      var s = seed % 2147483647; if (s <= 0) s += 2147483646;
+      function rand(){ s = s * 16807 % 2147483647; return (s - 1) / 2147483646; }
+      var W = 900, H = 2600, STEPS = 30;
+      var d = 'M ' + W + ' 0';
+      for (var i = 0; i <= STEPS; i++){
+        var y = Math.round(H / STEPS * i);
+        var t = i / STEPS;
+        var base = W * (0.85 - taper * Math.pow(t, 1.4));
+        var x = base + (rand() - 0.5) * W * jag * (0.45 + 0.55 * t);
+        x = Math.max(W * 0.04, Math.min(W * 0.95, x));
+        d += ' L ' + Math.round(x) + ' ' + y;
+      }
+      d += ' L ' + W + ' ' + H + ' Z';
+      return 'data:image/svg+xml,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H +
+        '" preserveAspectRatio="none"><path d="' + d + '" fill="FILL"/></svg>');
+    }
+
     /* back -> front */
     var LAYERS = [
       {h:1.00, amp:390, ease:0.055, jag:0.30, rise:0.42, seed:67, idle:50, spd:0.16, ph:0.0},
@@ -286,6 +337,24 @@
       o.el = el; o.x = 0;
       o.pathUri = ridgePath(o.seed, o.jag, o.rise);
     });
+    var rail = document.getElementById('aurora-rail');
+    var RAILS = [];
+    if (rail) {
+      RAILS = [
+        {taper:0.52, jag:0.30, seed:97, amp:90, ease:0.050, idle:80, spd:0.13, ph:0.5},
+        {taper:0.44, jag:0.34, seed:83, amp:72, ease:0.065, idle:64, spd:0.18, ph:2.2},
+        {taper:0.36, jag:0.30, seed:71, amp:56, ease:0.080, idle:50, spd:0.22, ph:3.6},
+        {taper:0.28, jag:0.32, seed:59, amp:42, ease:0.100, idle:38, spd:0.28, ph:4.9},
+        {taper:0.21, jag:0.26, seed:43, amp:30, ease:0.120, idle:26, spd:0.34, ph:0.9}
+      ];
+      RAILS.forEach(function(o){
+        var el = document.createElement('div');
+        el.className = 'vridge';
+        rail.appendChild(el);
+        o.el = el; o.y = 0;
+        o.pathUri = vRidgePath(o.seed, o.jag, o.taper);
+      });
+    }
     function effectiveLight(){
       var forced = document.documentElement.getAttribute('data-theme');
       if (forced === 'light') return true;
@@ -296,6 +365,9 @@
       var light = effectiveLight();
       var pal = PALETTES[light ? 'light' : 'dark'];
       LAYERS.forEach(function(o, i){
+        o.el.style.backgroundImage = 'url("' + o.pathUri.replace('FILL', encodeURIComponent(pal[i])) + '")';
+      });
+      RAILS.forEach(function(o, i){
         o.el.style.backgroundImage = 'url("' + o.pathUri.replace('FILL', encodeURIComponent(pal[i])) + '")';
       });
       document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){
@@ -323,15 +395,19 @@
       LAYERS.forEach(function(o){ o.el.style.height = Math.round(o.h * footH() * 1.22) + 'px'; });
     }, {passive:true});
 
-    function on(){ aurora.classList.add('on'); }
+    function on(){
+      aurora.classList.add('on');
+      if (rail) rail.classList.add('on');
+    }
     requestAnimationFrame(on);
     setTimeout(on, 600);
 
     if (reduced) return;
 
-    var mx = 0;
+    var mx = 0, my = 0;
     addEventListener('pointermove', function(e){
       mx = e.clientX / innerWidth - 0.5;
+      my = e.clientY / innerHeight - 0.5;
     }, {passive: true});
 
     var t0 = null;
@@ -343,6 +419,12 @@
         var target = mx * o.amp + idle;
         o.x += (target - o.x) * o.ease;
         o.el.style.transform = 'translate3d(' + o.x.toFixed(2) + 'px,0,0)';
+      });
+      RAILS.forEach(function(o){
+        var idle = Math.sin(t * o.spd + o.ph) * o.idle;
+        var target = my * o.amp + idle;
+        o.y += (target - o.y) * o.ease;
+        o.el.style.transform = 'translate3d(0,' + o.y.toFixed(2) + 'px,0)';
       });
       requestAnimationFrame(tick);
     }
