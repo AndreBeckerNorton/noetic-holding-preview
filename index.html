@@ -213,10 +213,16 @@
     .aurora{transition:none}
   }
   @media (max-width:680px){
-    .aurora{filter:blur(28px)}
-    .foot,.foot-base{flex-direction:column;gap:10px}
-    footer{height:auto;min-height:230px}
-    .foot-base{padding-top:26px}
+    .aurora{filter:blur(28px);inset:-80px -80px 0}
+    .bar{padding-top:10px;padding-bottom:10px}
+    main{padding-top:14px;padding-bottom:18px}
+    h1{font-size:1.55rem;margin-bottom:16px}
+    .copy br{display:none}
+    .copy p + p{margin-top:1em}
+    .foot,.foot-base{flex-direction:column;gap:8px}
+    footer{height:auto;min-height:185px}
+    .foot{padding-top:18px}
+    .foot-base{padding-top:16px;padding-bottom:max(14px,env(safe-area-inset-bottom))}
   }
 </style>
 </head>
@@ -327,11 +333,13 @@
       light: ['#dce8f4','#b7d2ec','#87bbc7','#221fc3','#1a1a1a']
     };
     var mqLight = matchMedia('(prefers-color-scheme: light)');
-    var footH = () => Math.max(aurora.parentElement.clientHeight, 230);
+    var footH = () => Math.max(aurora.parentElement.clientHeight, 180);
+    /* on phones the bloom must resolve inside the footer, not tower past it */
+    var ridgeMult = () => innerWidth <= 680 ? 1.0 : 1.22;
     LAYERS.forEach(function(o){
       var el = document.createElement('div');
       el.className = 'ridge';
-      el.style.height = Math.round(o.h * footH() * 1.22) + 'px';
+      el.style.height = Math.round(o.h * footH() * ridgeMult()) + 'px';
       aurora.appendChild(el);
       o.el = el; o.x = 0;
       o.pathUri = ridgePath(o.seed, o.jag, o.rise);
@@ -391,7 +399,7 @@
       });
     }
     addEventListener('resize', function(){
-      LAYERS.forEach(function(o){ o.el.style.height = Math.round(o.h * footH() * 1.22) + 'px'; });
+      LAYERS.forEach(function(o){ o.el.style.height = Math.round(o.h * footH() * ridgeMult()) + 'px'; });
     }, {passive:true});
 
     function on(){
